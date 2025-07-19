@@ -28,5 +28,22 @@
  * @param classes the input classes from props
  * @returns the resolved classes for all slots
  */
-function t(t,e,n=void 0){const o={};for(const r in t){const f=t[r];let l="";let s=true;for(let t=0;t<f.length;t+=1){const o=f[t];if(o){l+=(s===true?"":" ")+e(o);s=false;n&&n[o]&&(l+=" "+n[o])}}o[r]=l}return o}export{t as default};
-
+function t(t, e, n = void 0) {
+  const o = {};
+  for (const r in t) {
+    const f = t[r];
+    let l = "";
+    let s = true;
+    for (let t = 0; t < f.length; t += 1) {
+      const o = f[t];
+      if (o) {
+        l += (s === true ? "" : " ") + e(o);
+        s = false;
+        n && n[o] && (l += " " + n[o]);
+      }
+    }
+    o[r] = l;
+  }
+  return o;
+}
+export { t as default };

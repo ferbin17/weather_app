@@ -82,6 +82,7 @@ group :test do
   gem "faker"
   gem "rails-controller-testing"
   gem "rspec-rails"
+  gem "rspec-rails-controller", group: :test
   gem "shoulda-matchers"
   gem "webmock"
 
