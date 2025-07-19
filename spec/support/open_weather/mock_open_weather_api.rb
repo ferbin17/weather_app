@@ -3,7 +3,7 @@ class MockOpenWeatherApi
     def one_call(*args)
       MockWeatherResponse.new(
         current: generate_current_weather,
-        daily: generate_daily_forecast(5)
+        daily: generate_daily_forecast(10)
       )
     end
 

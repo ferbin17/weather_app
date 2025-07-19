@@ -83,16 +83,6 @@ RSpec.configure do |config|
       example.run
     end
   end
-
-  # VCR configuration
-  config.before(:each) do
-    VCR.configure do |c|
-      c.cassette_library_dir = "spec/vcr_cassettes"
-      c.hook_into :webmock
-      c.configure_rspec_metadata!
-      c.allow_http_connections_when_no_cassette = true
-    end
-  end
 end
 
 # Shoulda Matchers configuration
