@@ -90,4 +90,51 @@ RSpec.describe WeatherController do
       end
     end
   end
+
+  describe "POST #show" do
+    let(:address) { "New York" }
+    let(:mock_location) do
+      {
+        "loc" => "40.7128,-74.0060",
+        "city" => address,
+        "country" => "US",
+        "zipcode" => "10001",
+        "region" => "NY"
+      }
+    end
+    let(:mock_weather_data) do
+      mock_response = MockOpenWeatherApi.one_call
+      {
+        current: mock_response.current,
+        daily: mock_response.daily,
+        location: mock_location
+      }
+    end
+
+    before do
+      allow(LocationFinder).to receive(:call).and_return(mock_location)
+      allow(WeatherFinder).to receive(:call).and_return(mock_weather_data)
+    end
+
+    it "renders the today_weather partial for valid address" do
+      post :show, params: { weather: { address: address } }
+
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(partial: "_today_weather")
+    end
+
+    it "returns bad request if address is missing" do
+      post :show, params: { weather: { address: "" } }
+
+      expect(response).to have_http_status(:bad_request)
+      expect(response.body).to include("Address is required")
+    end
+
+    it "returns bad request if weather param is missing" do
+      post :show, params: {}
+
+      expect(response).to have_http_status(:bad_request)
+      expect(response.body).to include("Address is required")
+    end
+  end
 end

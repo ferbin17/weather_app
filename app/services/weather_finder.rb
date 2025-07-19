@@ -23,11 +23,11 @@ class WeatherFinder
   private
 
   def latitude
-    @latitude ||= location["loc"].split(",").first
+    @latitude ||= location[:loc].split(",").first
   end
 
   def longitude
-    @longitude ||= location["loc"].split(",").last
+    @longitude ||= location[:loc].split(",").last
   end
 
   def fetch_weather
