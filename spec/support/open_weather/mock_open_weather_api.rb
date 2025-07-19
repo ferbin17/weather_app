@@ -1,6 +1,6 @@
 class MockOpenWeatherApi
   class << self
-    def one_call(*args)
+    def one_call(*_args)
       MockWeatherResponse.new(
         current: generate_current_weather,
         daily: generate_daily_forecast(10)

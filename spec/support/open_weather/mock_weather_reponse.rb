@@ -54,13 +54,13 @@ end
 class MockTemperature
   attr_reader :day, :min, :max, :night, :eve, :morn
 
-  def initialize(day:, min:, max:, night:, eve:, morn:)
-    @day = day
-    @min = min
-    @max = max
-    @night = night
-    @eve = eve
-    @morn = morn
+  def initialize(params = {})
+    @day = params[:day]
+    @min = params[:min]
+    @max = params[:max]
+    @night = params[:night]
+    @eve = params[:eve]
+    @morn = params[:morn]
   end
 end
 
