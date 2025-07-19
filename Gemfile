@@ -29,6 +29,9 @@ gem "jbuilder"
 # Use Tailwind CSS for styling
 gem "tailwindcss-rails"
 
+# Use Geocoder for address geocoding and location services
+gem "geocoder"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
