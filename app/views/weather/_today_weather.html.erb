@@ -1,3 +1,4 @@
+<%= hidden_field_tag :current_address, params.dig(:weather, :address), id: "current-address" %>
 <div class="<%= weather_card_class(@presenter.weather_status) %>">
   <div class="text-center mb-6">
     <div class="flex items-center justify-center gap-4 mb-2">

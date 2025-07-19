@@ -26,8 +26,9 @@ export default class extends Controller {
     event.preventDefault()
     const { checked } = event.target
     const unit = checked ? "fahrenheit" : "celsius"
+    const address = document.querySelector('#current-address')?.value
 
-    this._fetchWeather({ unit })
+    this._fetchWeather({ unit, address })
   }
 
   _fetchWeather({ address, unit }) {
