@@ -10,14 +10,14 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 3.3
   Exclude:
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'bin/**/*'
-    - 'vendor/**/*'
-    - 'node_modules/**/*'
-    - 'tmp/**/*'
-    - 'log/**/*'
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - "bin/**/*"
+    - "vendor/**/*"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
 
 # Style preferences
 Style/Documentation:
@@ -63,8 +63,8 @@ Metrics/ClassLength:
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
+    - "spec/**/*"
+    - "test/**/*"
 
 # Rails specific
 Rails/FilePath:
@@ -78,8 +78,8 @@ Rails/Date:
 
 Rails/Output:
   Exclude:
-    - 'db/seeds.rb'
-    - 'lib/tasks/**/*'
+    - "db/seeds.rb"
+    - "lib/tasks/**/*"
 
 # Performance
 Performance/StringReplacement:
@@ -89,7 +89,7 @@ Performance/RedundantMatch:
   Enabled: true
 
 Performance/RegexpMatch:
-  Enabled: true 
+  Enabled: true
 
 # Optionally, you can configure or override rules here:
 Capybara:

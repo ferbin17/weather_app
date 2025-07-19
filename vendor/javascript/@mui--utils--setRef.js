@@ -13,5 +13,7 @@
  * while still using it inside the component.
  * @param ref A ref callback or ref object. If anything falsy, this is a no-op.
  */
-function t(t,n){typeof t==="function"?t(n):t&&(t.current=n)}export{t as default};
-
+function t(t, n) {
+  typeof t === "function" ? t(n) : t && (t.current = n);
+}
+export { t as default };

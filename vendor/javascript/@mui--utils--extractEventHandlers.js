@@ -7,5 +7,17 @@
  * @param object An object to extract event handlers from.
  * @param excludeKeys An array of keys to exclude from the returned object.
  */
-function t(t,e=[]){if(t===void 0)return{};const n={};Object.keys(t).filter((n=>n.match(/^on[A-Z]/)&&typeof t[n]==="function"&&!e.includes(n))).forEach((e=>{n[e]=t[e]}));return n}export{t as default};
-
+function t(t, e = []) {
+  if (t === void 0) return {};
+  const n = {};
+  Object.keys(t)
+    .filter(
+      (n) =>
+        n.match(/^on[A-Z]/) && typeof t[n] === "function" && !e.includes(n),
+    )
+    .forEach((e) => {
+      n[e] = t[e];
+    });
+  return n;
+}
+export { t as default };

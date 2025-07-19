@@ -10,5 +10,9 @@
  *   ...
  * @param {number} code
  */
-function r(r,...e){const o=new URL(`https://mui.com/production-error/?code=${r}`);e.forEach((r=>o.searchParams.append("args[]",r)));return`Minified MUI error #${r}; visit ${o} for the full message.`}export{r as default};
-
+function r(r, ...e) {
+  const o = new URL(`https://mui.com/production-error/?code=${r}`);
+  e.forEach((r) => o.searchParams.append("args[]", r));
+  return `Minified MUI error #${r}; visit ${o} for the full message.`;
+}
+export { r as default };
