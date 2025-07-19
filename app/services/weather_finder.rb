@@ -6,9 +6,11 @@ class WeatherFinder
   def initialize(location)
     @location = location
     @error = { error: "Invalid location data" } if location.blank?
-    @from_cache = Rails.cache.exist?(cache_key)
 
-    fetch_weather if error.blank?
+    if error.blank?
+      @from_cache = Rails.cache.exist?(cache_key)
+      fetch_weather
+    end
   end
 
   def call
