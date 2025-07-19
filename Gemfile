@@ -75,3 +75,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# Weather API client
+gem 'open-weather-ruby-client'
