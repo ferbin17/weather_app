@@ -297,6 +297,8 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
+    rspec-rails-controller (0.1.2)
+      rspec-rails (>= 2.4.0)
     rspec-support (3.13.4)
     rubocop (1.78.0)
       json (~> 2.3)
@@ -426,6 +428,7 @@ DEPENDENCIES
   rails (~> 7.1.5, >= 7.1.5.1)
   rails-controller-testing
   rspec-rails
+  rspec-rails-controller
   rubocop
   rubocop-capybara (~> 2.22)
   rubocop-factory_bot (~> 2.27)
