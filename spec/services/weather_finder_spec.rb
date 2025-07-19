@@ -128,4 +128,38 @@ RSpec.describe WeatherFinder, type: :service do
       expect(finder.weather.daily.first.temp.day).to eq(306.29)
     end
   end
+
+  describe "caching" do
+    let(:location) { { "loc" => "40.7128,-74.0060", "city" => "New York", "country" => "US", "zipcode" => "10001" } }
+    let(:unit) { "celsius" }
+    let(:unit2) { "fahrenheit" }
+    let(:weather_detail) { instance_double(WeatherDetail, description: "rain") }
+    let(:temp_instance) { instance_double(Temp, day: 306.29) }
+    let(:daily_instance) { instance_double(Daily, dt: Time.zone.now, temp: temp_instance, weather: [weather_detail]) }
+    let(:current_instance) { instance_double(Current, temp: 20.5) }
+    let(:weather_instance) { instance_double(Weather, current: current_instance, daily: [daily_instance]) }
+
+    before do
+      Rails.cache.clear
+      allow(OpenWeatherClient).to receive(:one_call).and_return(weather_instance)
+    end
+
+    it "caches the weather data for the same location and unit" do
+      described_class.new(location).send(:fetch_weather)
+      expect(OpenWeatherClient).to have_received(:one_call).once
+      described_class.new(location).send(:fetch_weather)
+      expect(OpenWeatherClient).to have_received(:one_call).once # still once, cache hit
+    end
+
+    it "uses a different cache key for different units" do
+      described_class.new(location).send(:fetch_weather)
+      expect(OpenWeatherClient).to have_received(:one_call).once
+      described_class.new(location).send(:fetch_weather)
+      expect(OpenWeatherClient).to have_received(:one_call).once # cache hit
+      # Now with a different unit, should call API again
+      allow(OpenWeatherClient).to receive(:one_call).and_return(weather_instance)
+      described_class.new(location).send(:fetch_weather)
+      expect(OpenWeatherClient).to have_received(:one_call).twice
+    end
+  end
 end

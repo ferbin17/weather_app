@@ -137,4 +137,82 @@ RSpec.describe WeatherController do
       expect(response.body).to include("Address is required")
     end
   end
+
+  describe "POST #show (unit toggle)" do
+    let(:address) { "New York" }
+    let(:mock_location) do
+      {
+        "loc" => "40.7128,-74.0060",
+        "city" => address,
+        "country" => "US",
+        "zipcode" => "10001",
+        "region" => "NY"
+      }
+    end
+    let(:mock_weather_data) do
+      mock_response = MockOpenWeatherApi.one_call
+      {
+        current: mock_response.current,
+        daily: mock_response.daily,
+        location: mock_location,
+        from_cache: false
+      }
+    end
+
+    before do
+      allow(LocationFinder).to receive(:call).and_return(mock_location)
+      allow(WeatherFinder).to receive(:call).and_return(mock_weather_data)
+    end
+
+    it "returns weather in celsius" do
+      post :show, params: { weather: { address: address, unit: "celsius" } }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("°C")
+    end
+
+    it "returns weather in fahrenheit" do
+      post :show, params: { weather: { address: address, unit: "fahrenheit" } }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("°F")
+    end
+  end
+
+  describe "POST #show (caching)" do
+    let(:address) { "New York" }
+    let(:mock_location) do
+      {
+        "loc" => "40.7128,-74.0060",
+        "city" => address,
+        "country" => "US",
+        "zipcode" => "10001",
+        "region" => "NY"
+      }
+    end
+    let(:mock_weather_data) do
+      mock_response = MockOpenWeatherApi.one_call
+      {
+        current: mock_response.current,
+        daily: mock_response.daily,
+        location: mock_location,
+        from_cache: false
+      }
+    end
+
+    before do
+      allow(LocationFinder).to receive(:call).and_return(mock_location)
+      allow(WeatherFinder).to receive(:call).and_return(mock_weather_data)
+    end
+
+    it "sets from_cache to true on second request" do
+      # First request (should not be cached)
+      allow(WeatherFinder).to receive(:call).and_return(mock_weather_data.merge(from_cache: false))
+      post :show, params: { weather: { address: address, unit: "celsius" } }
+      expect(assigns(:presenter).weather_data[:from_cache]).to be(false)
+
+      # Second request (should be cached)
+      allow(WeatherFinder).to receive(:call).and_return(mock_weather_data.merge(from_cache: true))
+      post :show, params: { weather: { address: address, unit: "celsius" } }
+      expect(assigns(:presenter).weather_data[:from_cache]).to be(true)
+    end
+  end
 end

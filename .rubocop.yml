@@ -112,3 +112,6 @@ RSpecRails:
 
 RSpec/VerifiedDoubles:
   Enabled: true
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 15
