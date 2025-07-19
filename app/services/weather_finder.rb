@@ -6,6 +6,7 @@ class WeatherFinder
   def initialize(location)
     @location = location
     @error = { error: "Invalid location data" } if location.blank?
+    @from_cache = Rails.cache.exist?(cache_key)
 
     fetch_weather if error.blank?
   end
@@ -16,11 +17,25 @@ class WeatherFinder
     {
       current: weather.current,
       daily: weather.daily,
-      location: location
+      location: location,
+      from_cache: from_cache?
     }
   end
 
   private
+
+  def fetch_weather
+    @weather = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
+      OpenWeatherClient.one_call(lat: latitude, lon: longitude, exclude: %w[minutely hourly])
+    end
+  rescue StandardError => e
+    Rails.logger.error "WeatherFinder error: #{e.message}"
+    @error = { error: "Unable to fetch weather data" }
+  end
+
+  def from_cache?
+    @from_cache
+  end
 
   def latitude
     @latitude ||= location[:loc].split(",").first
@@ -30,10 +45,11 @@ class WeatherFinder
     @longitude ||= location[:loc].split(",").last
   end
 
-  def fetch_weather
-    @weather = OpenWeatherClient.one_call(lat: latitude, lon: longitude, exclude: %w[minutely hourly])
-  rescue StandardError => e
-    Rails.logger.error "WeatherFinder error: #{e.message}"
-    @error = { error: "Unable to fetch weather data" }
+  def zipcode
+    @zipcode ||= location[:zipcode]
+  end
+
+  def cache_key
+    @cache_key ||= "weather:#{zipcode}"
   end
 end
