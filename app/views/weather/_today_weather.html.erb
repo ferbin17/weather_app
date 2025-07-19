@@ -1,83 +1,94 @@
 <%= hidden_field_tag :current_address, params.dig(:weather, :address), id: "current-address" %>
-<div class="<%= weather_card_class(@presenter.weather_status) %>">
-  <div class="text-center mb-6">
-    <div class="flex items-center justify-center gap-4 mb-2">
-      <h2 class="text-3xl font-bold text-gray-800"><%= location_name(@presenter.location) %></h2>
-      <button 
-        class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium py-1 px-3 rounded-md border border-gray-300 transition-colors"
-        data-action="click->weather--index#toggleWeatherDisplay"
-      >
-        Change Location
-      </button>
+<div class="relative">
+  <% if @presenter.data_from_cache? %>
+    <div class="absolute top-2 right-4 text-xs text-yellow-900 bg-yellow-200 border border-yellow-400 px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+      <svg class="w-4 h-4 text-yellow-500 inline" fill="currentColor" viewBox="0 0 20 20" title="Cached result">
+        <title>Cached result</title>
+        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.72-1.36 3.485 0l6.518 11.591c.75 1.334-.213 2.987-1.742 2.987H3.48c-1.53 0-2.492-1.653-1.742-2.987L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V8a1 1 0 112 0v3a1 1 0 01-1 1z" clip-rule="evenodd"/>
+      </svg>
+      <span class="sr-only">Cached result</span>
     </div>
-    <p class="text-gray-600">Current Weather</p>
+  <% end %>
+  <div class="<%= weather_card_class(@presenter.weather_status) %>">
+    <div class="text-center mb-6">
+      <div class="flex items-center justify-center gap-4 mb-2">
+        <h2 class="text-3xl font-bold text-gray-800"><%= location_name(@presenter.location) %></h2>
+        <button 
+          class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium py-1 px-3 rounded-md border border-gray-300 transition-colors"
+          data-action="click->weather--index#toggleWeatherDisplay"
+        >
+          Change Location
+        </button>
+      </div>
+      <p class="text-gray-600">Current Weather</p>
+    </div>
+
+    <div class="text-center" data-weather--index-target="weatherDisplay">
+      <div class="mb-4">
+        <%= large_weather_icon(@presenter.current_description).html_safe %>
+      </div>
+      <div class="text-6xl font-bold <%= temperature_class(@presenter.current_temperature) %> mb-2"><%= format_temperature(@presenter.current_temperature, temperature_unit) %></div>
+      <div class="text-xl text-gray-600 mb-2"><%= @presenter.current_description %></div>
+      <div class="text-sm text-gray-500 mb-4">Feels like <%= format_temperature(@presenter.feels_like, temperature_unit) %></div>
+      
+      <!-- High/Low Temperatures -->
+      <div class="flex justify-center space-x-4 text-sm mb-6">
+        <div class="text-red-600">
+          <span class="font-semibold">High:</span> <%= format_temperature(@presenter.high_temperature, temperature_unit) %>
+        </div>
+        <div class="text-blue-600">
+          <span class="font-semibold">Low:</span> <%= format_temperature(@presenter.low_temperature, temperature_unit) %>
+        </div>
+      </div>
+
+      <!-- Unit Toggle -->
+      <%= render "unit_toggle", temperature_unit: temperature_unit %>
+
+      <!-- Weather Details -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-blue-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span class="text-gray-700">Humidity</span>
+          </div>
+          <span class="font-semibold text-gray-800"><%= @presenter.humidity %></span>
+        </div>
+
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span class="text-gray-700">Wind Speed</span>
+          </div>
+          <span class="font-semibold text-gray-800"><%= @presenter.wind_speed %></span>
+        </div>
+
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span class="text-gray-700">Pressure</span>
+          </div>
+          <span class="font-semibold text-gray-800"><%= @presenter.pressure %></span>
+        </div>
+
+        <div class="flex justify-between items-center py-2">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-orange-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span class="text-gray-700">Visibility</span>
+          </div>
+          <span class="font-semibold text-gray-800"><%= @presenter.visibility %></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Form -->
+    <%= render "address_form" %>
   </div>
-
-  <div class="text-center" data-weather--index-target="weatherDisplay">
-    <div class="mb-4">
-      <%= large_weather_icon(@presenter.current_description).html_safe %>
-    </div>
-    <div class="text-6xl font-bold <%= temperature_class(@presenter.current_temperature) %> mb-2"><%= format_temperature(@presenter.current_temperature, temperature_unit) %></div>
-    <div class="text-xl text-gray-600 mb-2"><%= @presenter.current_description %></div>
-    <div class="text-sm text-gray-500 mb-4">Feels like <%= format_temperature(@presenter.feels_like, temperature_unit) %></div>
-    
-    <!-- High/Low Temperatures -->
-    <div class="flex justify-center space-x-4 text-sm mb-6">
-      <div class="text-red-600">
-        <span class="font-semibold">High:</span> <%= format_temperature(@presenter.high_temperature, temperature_unit) %>
-      </div>
-      <div class="text-blue-600">
-        <span class="font-semibold">Low:</span> <%= format_temperature(@presenter.low_temperature, temperature_unit) %>
-      </div>
-    </div>
-
-    <!-- Unit Toggle -->
-    <%= render "unit_toggle", temperature_unit: temperature_unit %>
-
-    <!-- Weather Details -->
-    <div class="space-y-3">
-      <div class="flex justify-between items-center py-2 border-b border-gray-200">
-        <div class="flex items-center">
-          <svg class="w-5 h-5 text-blue-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span class="text-gray-700">Humidity</span>
-        </div>
-        <span class="font-semibold text-gray-800"><%= @presenter.humidity %></span>
-      </div>
-
-      <div class="flex justify-between items-center py-2 border-b border-gray-200">
-        <div class="flex items-center">
-          <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span class="text-gray-700">Wind Speed</span>
-        </div>
-        <span class="font-semibold text-gray-800"><%= @presenter.wind_speed %></span>
-      </div>
-
-      <div class="flex justify-between items-center py-2 border-b border-gray-200">
-        <div class="flex items-center">
-          <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span class="text-gray-700">Pressure</span>
-        </div>
-        <span class="font-semibold text-gray-800"><%= @presenter.pressure %></span>
-      </div>
-
-      <div class="flex justify-between items-center py-2">
-        <div class="flex items-center">
-          <svg class="w-5 h-5 text-orange-500 mr-3" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span class="text-gray-700">Visibility</span>
-        </div>
-        <span class="font-semibold text-gray-800"><%= @presenter.visibility %></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Address Form -->
-  <%= render "address_form" %>
 </div>

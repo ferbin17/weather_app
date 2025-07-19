@@ -8,6 +8,10 @@ class WeatherPresenter
     @location = location
   end
 
+  def data_from_cache?
+    weather_data[:from_cache]
+  end
+
   def current_temperature
     return "N/A" unless current_weather&.temp
 
