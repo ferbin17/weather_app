@@ -8,13 +8,34 @@ class LocationFinder
   end
 
   def call
-    begin
-      result = Geocoder.search(@ip_address).first
+    @location = begin
+      Geocoder.search(@ip_address).first
     rescue StandardError => e
       Rails.logger.error("Geocoder error: #{e.message}")
+      nil
     end
-    return unless result
+    return unless @location
 
-    result.data.slice("loc", "city", "country").merge(zipcode: result.postal, region: result.state)
+    {
+      city: city,
+      loc: loc,
+      zipcode: zipcode,
+      region: @location.state,
+      country: @location.country
+    }
+  end
+
+  private
+
+  def city
+    @location.city || @location.data["address"]["county"]
+  end
+
+  def zipcode
+    @location.try(:postal).presence || @location.data["address"]["postcode"]
+  end
+
+  def loc
+    @location.data["loc"].presence || [@location.data["lat"], @location.data["lon"]].join(",")
   end
 end

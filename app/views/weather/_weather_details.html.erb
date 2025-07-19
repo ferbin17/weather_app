@@ -1,0 +1,7 @@
+ <% if @presenter.weather_data? %>
+    <!-- Weather Display - Side by Side -->
+    <%= render partial: "weather_data", locals: { presenter: @presenter } %>
+<% else %>
+    <!-- No Data State -->
+    <%= render partial: "no_weather_data" %>
+<% end %>

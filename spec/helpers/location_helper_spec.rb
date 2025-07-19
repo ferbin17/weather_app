@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LocationHelper, type: :helper do
+RSpec.describe LocationHelper do
   describe "#location_name" do
     it "returns city if present" do
       expect(helper.location_name({ "city" => "New York" })).to eq("New York")

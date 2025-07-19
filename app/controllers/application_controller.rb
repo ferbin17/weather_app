@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_user_ip
-    @user_ip = request.remote_ip
+    @set_user_ip = request.remote_ip == "::1" ? "8.8.8.8" : request.remote_ip
   end
 end

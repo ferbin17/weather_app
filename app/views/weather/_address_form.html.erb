@@ -1,0 +1,24 @@
+<div class="text-center hidden" data-weather--index-target="addressForm">
+    <%= form_with url: weather_show_path, method: :post, class: "space-y-4", data: { action: "submit->weather--index#submitAddress" } do |form| %>
+      <div>
+        <%= form.text_field :address,
+          placeholder: "Enter city name or coordinates",
+          class: "w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-500",
+          autocomplete: "off",
+          required: true
+        %>
+      </div>
+      <div class="flex gap-3 justify-center">
+        <%= form.submit "Change Location",
+          class: "bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+        %>
+        <button 
+          type="button" 
+          class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors"
+          data-action="click->weather--index#toggleWeatherDisplay"
+        >
+          Cancel
+        </button>
+      </div>
+    <% end %>
+  </div>
