@@ -8,9 +8,10 @@ class WeatherController < ApplicationController
   end
 
   def show
-    @address = weather_params[:address]
+    @address = weather_params[:address].presence || set_user_ip
 
     if @address.present?
+      params[:unit] ||= weather_params[:unit]
       fetch_weather_details
 
       render json: { html: render_to_string(partial: "weather_details", locals: { presenter: @presenter }) },
@@ -30,6 +31,6 @@ class WeatherController < ApplicationController
   end
 
   def weather_params
-    params.require(:weather).permit(:address)
+    params.require(:weather).permit(:address, :unit)
   end
 end

@@ -1,7 +1,8 @@
 <div class="max-w-md mx-auto">
-    <div class="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-8 text-center">
-        <div class="text-6xl mb-4">🌤️</div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">No Weather Data</h3>
-        <p class="text-gray-600">Weather information will appear here when available.</p>
-    </div>
+  <div class="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-8 text-center flex flex-col items-center">
+    <div class="text-6xl mb-6">🌤️</div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">No Weather Data</h3>
+    <p class="text-gray-600 mb-6">Weather information will appear here when available.</p>
+    <%= link_to "Back to Home", root_path, class: "bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded transition-colors shadow mt-2" %>
+  </div>
 </div>

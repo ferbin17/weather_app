@@ -1,5 +1,3 @@
-require "weather_icons_helper"
-
 module WeatherHelper
   include WeatherIconsHelper
 

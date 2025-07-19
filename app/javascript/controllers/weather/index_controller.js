@@ -19,9 +19,23 @@ export default class extends Controller {
       return
     }
 
-    fetch('weather/show', {
+    this._fetchWeather({ address })
+  }
+
+  toggleUnit(event) {
+    event.preventDefault()
+    const { checked } = event.target
+    const unit = checked ? "fahrenheit" : "celsius"
+
+    this._fetchWeather({ unit })
+  }
+
+  _fetchWeather({ address, unit }) {
+    const payload = { weather: { address: address || '', unit: unit || undefined } }
+  
+    fetch('/weather/show', {
       method: 'POST',
-      body: JSON.stringify({ address }),
+      body: JSON.stringify(payload),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'text/html'
