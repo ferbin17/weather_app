@@ -42,7 +42,7 @@ gem "geocoder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i[windows jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -52,11 +52,16 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ]
-  
+  gem "debug", platforms: %i[mri windows]
+
   # Enhanced debugging with Pry features
   gem "pry-byebug"
   gem "pry-rails"
+
+  # Code linting and style enforcement
+  gem "rubocop", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", require: false
 end
 
 group :development do
@@ -71,10 +76,19 @@ group :development do
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  # RSpec for testing
+  gem "database_cleaner-active_record"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "rails-controller-testing"
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "webmock"
+
+  # System testing
   gem "capybara"
   gem "selenium-webdriver"
 end
 
 # Weather API client
-gem 'open-weather-ruby-client'
+gem "open-weather-ruby-client"
