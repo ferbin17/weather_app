@@ -7,10 +7,10 @@ Pry.config.color = true
 Pry.config.prompt = Pry::Prompt[:default]
 
 # Add useful shortcuts
-Pry.config.commands.alias_command 'c', 'continue'
-Pry.config.commands.alias_command 'n', 'next'
-Pry.config.commands.alias_command 's', 'step'
-Pry.config.commands.alias_command 'w', 'whereami'
+Pry.config.commands.alias_command "c", "continue"
+Pry.config.commands.alias_command "n", "next"
+Pry.config.commands.alias_command "s", "step"
+Pry.config.commands.alias_command "w", "whereami"
 
 # Load Rails environment helpers
 if defined?(Rails)
@@ -27,7 +27,7 @@ if defined?(Rails)
 end
 
 # Better error handling
-Pry.config.exception_handler = proc do |output, exception, pry|
+Pry.config.exception_handler = proc do |output, exception, _pry|
   output.puts "Exception: #{exception.class}: #{exception.message}"
   output.puts exception.backtrace.first(5).join("\n")
-end 
+end
