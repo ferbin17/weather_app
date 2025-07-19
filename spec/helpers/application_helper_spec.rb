@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper do
   describe "#format_date" do
     it "formats a valid date string" do
       expect(helper.format_date("2024-07-18")).to eq("Thursday, July 18")

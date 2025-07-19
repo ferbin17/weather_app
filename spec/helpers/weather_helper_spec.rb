@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe WeatherHelper, type: :helper do
+RSpec.describe WeatherHelper do
   describe "#weather_card_class" do
     it "returns base class for success" do
       expect(helper.weather_card_class("success")).to include("bg-white/90")
